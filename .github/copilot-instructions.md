@@ -1,0 +1,1 @@
+At the root of the codebase, there are two files named `docs.txt` and `api-reference.txt`. These files contain information about the usage of **wxt**, a next-generation web extension framework. Please refer to these files when answering my questions or generating code related to this project.
