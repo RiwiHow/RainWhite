@@ -1,29 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { getData } from "../api/OpenAI";
+import { fetchTranslation } from "../hook/useTranslation";
 
 export interface TranslatePanelProps {
   selectedText: string;
 }
 
 export default function TranslatePanel({ selectedText }: TranslatePanelProps) {
-  const [translateText, setTranslateText] = useState("");
 
-  useEffect(() => {
-    const fetchTranslation = async () => {
-      try {
-        const result = await getData(selectedText);
-        setTranslateText(result);
-      } catch (error) {
-        console.error("Translation error:", error);
-        setTranslateText("Translation failed");
-      }
-    };
+  const { isPending, data } = useQuery({
+    queryKey: ["translate", selectedText],
+    queryFn: () => fetchTranslation(selectedText),
+  });
 
-    fetchTranslation();
-  }, [selectedText]);
-
-  return (
-    <div className="min-w-80 rounded-xl bg-stone-200 p-4">
-      <div>{translateText}</div>
-    </div>
-  );
+  return <div className="min-w-80 rounded-xl bg-stone-200 p-4">{data}</div>;
 }

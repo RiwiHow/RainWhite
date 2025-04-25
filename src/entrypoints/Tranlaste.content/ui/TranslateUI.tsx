@@ -1,6 +1,9 @@
 import ReactDOM from "react-dom/client";
 import Translate from "../components/Translate";
 import { ContentScriptContext } from "wxt/utils/content-script-context";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClint } from "../hook/useTranslation";
+
 
 const selection = window.getSelection();
 
@@ -17,7 +20,12 @@ export async function createTranslateUI(ctx: ContentScriptContext) {
           setSelectedText(selection?.toString().trim() || "");
         }, [setSelectedText]);
 
-        return <Translate selectedText={selectedText} />;
+        return (
+          <QueryClientProvider client={queryClint}>
+            <Translate selectedText={selectedText} />
+            
+          </QueryClientProvider>
+        );
       };
 
       const root = ReactDOM.createRoot(container);
