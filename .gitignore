@@ -26,5 +26,3 @@ web-ext.config.ts
 *.sw?
 
 .prettierrc
-api-reference.txt
-docs.txt
