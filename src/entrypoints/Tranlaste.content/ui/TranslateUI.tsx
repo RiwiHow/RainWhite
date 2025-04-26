@@ -1,9 +1,6 @@
 import ReactDOM from "react-dom/client";
-import Translate from "../components/Translate";
-import { ContentScriptContext } from "wxt/utils/content-script-context";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClint } from "../hook/useTranslation";
-
+import { ContentScriptContext } from "#imports";
+import App from "../components/App";
 
 const selection = window.getSelection();
 
@@ -11,25 +8,10 @@ export async function createTranslateUI(ctx: ContentScriptContext) {
   return await createShadowRootUi(ctx, {
     name: "translate-panel",
     position: "overlay",
-    anchor: createAnchorElement,
+    anchor: createAnchorElement, // Set the UI position
     onMount: (container) => {
-      const App = () => {
-        const [selectedText, setSelectedText] = useState("");
-
-        useEffect(() => {
-          setSelectedText(selection?.toString().trim() || "");
-        }, [setSelectedText]);
-
-        return (
-          <QueryClientProvider client={queryClint}>
-            <Translate selectedText={selectedText} />
-            
-          </QueryClientProvider>
-        );
-      };
-
       const root = ReactDOM.createRoot(container);
-      root.render(<App />);
+      root.render(<App selection={selection} />);
       return root;
     },
     onRemove: (root) => {
